@@ -26,9 +26,6 @@ def update_pkg(s, version):
     ))
     
     updater.push_changes("upg(go-bin): %s" % version)
-
-    print(version)
-    print(checksums)
     
 def poll_for_updates():
     res = http.get('https://go.dev/dl')
