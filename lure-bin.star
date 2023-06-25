@@ -1,8 +1,17 @@
+def get_checksums(download_url):
+    checksum_url = download_url + "/checksums.txt"
+    res = http.get(checksum_url)
+    lines = res.body.string().split("\n")
+    res.body.close()
+    checksum_list = [item.split("  ") for item in lines]
+    checksums = [(checksum[1], checksum[0]) for checksum in checksum_list if len(checksum) == 2]
+    return checksums
+
 def update_pkg(req):    
     if req.headers["X-Gitea-Event"][0] != "release":
         return {"code": 400, "body": "This plugin only accepts release events"}
     
-    body = json.decode(req.body.string())
+    body = req.body.read_json()
     req.body.close()
     
     if body["action"] != "published":
@@ -47,12 +56,3 @@ def update_pkg(req):
     updater.push_changes("upg(lure-bin): %s" % name[1:])    
 
 register_webhook(update_pkg)
-
-def get_checksums(download_url):
-    checksum_url = download_url + "/checksums.txt"
-    res = http.get(checksum_url)
-    lines = res.body.string().split("\n")
-    res.body.close()
-    checksum_list = [item.split("  ") for item in lines]
-    checksums = [(checksum[1], checksum[0]) for checksum in checksum_list if len(checksum) == 2]
-    return checksums
