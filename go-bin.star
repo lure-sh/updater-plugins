@@ -15,6 +15,8 @@ def update_pkg(s, version):
             checksums['arm64'] = checksum
         elif 'linux-armv6l' in link:
             checksums['arm6'] = checksum
+        elif 'linux-riscv64' in link:
+            checksums['riscv64'] = checksum
     
     tmpl = updater.get_package_file("go-bin", "lure.tmpl.sh")
     updater.write_package_file("go-bin", "lure.sh", tmpl % (
@@ -23,6 +25,7 @@ def update_pkg(s, version):
         checksums["arm64"],
         checksums["arm6"],
         checksums["386"],
+        checksums["riscv64"],
     ))
     
     updater.push_changes("upg(go-bin): %s" % version)
