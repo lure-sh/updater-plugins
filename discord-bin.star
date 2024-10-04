@@ -1,5 +1,5 @@
 def update_pkg(location):
-    match = regex.compile(r'https://dl\.discordapp\.net/apps/linux/(\d+\.\d+\.\d+)/.+\.tar\.gz').find_one(location)
+    match = regex.compile(r'https://stable\.dl[0-9]+\.discordapp\.net/apps/linux/(\d+\.\d+\.\d+)/.+\.tar\.gz').find_one(location)
     tmpl = updater.get_package_file("discord-bin", "lure.tmpl.sh")
     updater.write_package_file("discord-bin", "lure.sh", tmpl % (match[1], location))
     updater.push_changes("upg(discord-bin): %s" % match[1])
